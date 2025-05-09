@@ -1,69 +1,72 @@
-const express = require("express");
-const multer = require("multer");
-const bodyParser = require("body-parser");
-const axios = require("axios");
-const path = require("path");
-const fs = require("fs");
+// backend/index.js
+
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const pdfParse = require('pdf-parse');
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+require('dotenv').config();
 
 const app = express();
-const port = 5000;
+app.use(cors());
+app.use(express.json());
 
-// Middleware
-app.use(bodyParser.json());
-const upload = multer({ dest: "uploads/" });
+// Upload folder for resumes
+const upload = multer({ dest: 'uploads/' });
 
-// Job listings (mock data for demonstration)
-const jobListings = [
-  { title: "Software Engineer", requiredSkills: ["JavaScript", "React", "Node.js"] },
-  { title: "Backend Developer", requiredSkills: ["Node.js", "Python", "AWS"] },
-];
-
-// Job matching logic
-const matchJobs = (skills) => {
-  return jobListings.filter((job) =>
-    job.requiredSkills.some((skill) => skills.includes(skill))
-  );
-};
-
-// Resume upload and analysis
-app.post("/upload", upload.single("resume"), async (req, res) => {
-  const resumePath = path.join(__dirname, req.file.path);
-
-  // Read the resume content
-  const resumeContent = fs.readFileSync(resumePath, "utf-8");
-
+/**
+ * POST /analyze
+ * - Accepts resume file
+ * - Extracts text from PDF
+ * - Sends to Gemini API for intelligent analysis
+ */
+app.post('/analyze', upload.single('resume'), async (req, res) => {
   try {
-    // Call the Gemini API to analyze the resume (assuming you've set up an API key for Gemini NLP)
+    if (!req.file) {
+      return res.status(400).send('No file uploaded.');
+    }
+
+    const filePath = path.join(__dirname, req.file.path);
+    const dataBuffer = fs.readFileSync(filePath);
+    const pdfData = await pdfParse(dataBuffer);
+    const resumeText = pdfData.text;
+
+    // Send to Gemini API
     const geminiResponse = await axios.post(
-      "https://api.gemini.com/analyze",
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
       {
-        document: resumeContent,
+        contents: [{
+          parts: [{
+            text: `Analyze the following resume and extract key skills, experience, education, and suggest jobs, improvements, and missing skills:\n\n${resumeText}`
+          }]
+        }]
       },
       {
         headers: {
-          "Authorization": `Bearer AIzaSyDxuQInhGeuGfgF4pPMua-gmgyjRHgJT-0`,
+          'Content-Type': 'application/json'
         },
+        params: {
+          key: process.env.GEMINI_API_KEY
+        }
       }
     );
 
-    const resumeData = geminiResponse.data; // This will contain extracted skills, experience, etc.
-    const matchedJobs = matchJobs(resumeData.skills);
+    const geminiOutput = geminiResponse.data.candidates[0].content.parts[0].text;
 
     res.json({
-      message: "Resume uploaded and analyzed successfully",
-      resumeData: resumeData,
-      jobMatches: matchedJobs,
+      success: true,
+      analysis: geminiOutput
     });
 
     // Clean up uploaded file
-    fs.unlinkSync(resumePath);
-  } catch (error) {
-    console.error("Error analyzing resume:", error);
-    res.status(500).json({ error: "Error analyzing resume" });
+    fs.unlinkSync(filePath);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ success: false, message: 'Error processing resume.' });
   }
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+const PORT = 5000;
+app.listen(PORT, () => console.log(`✅ Backend running on http://localhost:${PORT}`));
