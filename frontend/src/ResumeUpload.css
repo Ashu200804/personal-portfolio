@@ -1,0 +1,182 @@
+body {
+  background: url('https://www.transparenttextures.com/patterns/geometry2.png'), linear-gradient(to right, #e3f2fd, #ffffff);
+  background-repeat: repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+
+.upload-container {
+  background: #ffffff;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.upload-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #003366;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input[type="file"],
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  background-color: #f9f9f9;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.button-group button,
+.submit-btn {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-group button:hover,
+.submit-btn:hover {
+  background-color: #0d47a1;
+}
+
+.center-button {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.loading {
+  text-align: center;
+  font-weight: bold;
+  color: #ff9800;
+  margin-top: 1rem;
+}
+
+.result-box {
+  background: #f4faff;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  color: #222;
+  line-height: 1.6;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #004080;
+  margin-top: 1rem;
+}
+
+.section-heading {
+  font-weight: bold;
+  color: #004080;
+}
+
+.highlighted-line {
+  font-weight: bold;
+  color: #0d6efd;
+  margin-bottom: 0.5rem;
+}
+
+.normal-line {
+  margin-bottom: 0.5rem;
+}
+
+.feedback-summary {
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #0d47a1;
+  font-size: 1.1rem;
+}
+
+.feedback-list,
+.feedback-skills,
+.point-list {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.feedback-list li,
+.feedback-skills li,
+.point-list li {
+  margin-bottom: 0.4rem;
+  line-height: 1.6;
+}
+
+.highlighted-point {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.compare-intro {
+  background-color: #e3f2fd;
+  border-left: 4px solid #1976d2;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.compare-intro ul {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid #ccc;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.styled-table th {
+  background-color: #bbdefb;
+  color: #003366;
+}
+
+.highlight-cell {
+  background-color: #d1e7ff;
+  font-weight: bold;
+}

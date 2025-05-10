@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+.upload-container {
+  background-color: #f7f7f7;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.upload-container button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upload-container button:hover {
+  background-color: #0056b3;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+}
+
