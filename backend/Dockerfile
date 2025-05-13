@@ -1,9 +1,20 @@
-FROM node:14
+# Base image
+FROM node:18
 
+# Set working directory
 WORKDIR /app
+
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy the rest of the app
 COPY . .
 
+# Expose the backend port
 EXPOSE 5000
-CMD ["node", "index.js"]
+
+# Start the server
+CMD ["npm", "start"]

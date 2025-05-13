@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: resume-backend
+    ports:
+      - "5050:5000"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: resume-ui
+    ports:
+      - "3050:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
