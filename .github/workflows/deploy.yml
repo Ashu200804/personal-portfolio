@@ -15,6 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up SSH Key
+        run: echo "${{ secrets.AWS_EC2_SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+        continue-on-error: false
+
+      - name: Install pm2 (if not already installed)
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p 22 ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} "npm install -g pm2 || true"
+
       - name: Deploy to AWS EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -23,7 +31,8 @@ jobs:
           key: ${{ secrets.AWS_EC2_SSH_KEY }}
           port: 22
           script: |
-            cd /home/${{ secrets.AWS_EC2_USER }}/your-backend-folder
-            git pull origin main
-            npm install
-            pm2 restart backend || pm2 start index.js --name backend
+            cd /home/${{ secrets.AWS_EC2_USER }}/your-backend-folder || exit 1
+            git fetch origin main || exit 1
+            git reset --hard origin/main || exit 1
+            npm install || exit 1
+            pm2 restart backend || pm2 start index.js --name backend || exit 1
