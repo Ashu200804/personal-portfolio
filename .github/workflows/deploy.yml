@@ -2,7 +2,7 @@ name: Deploy to AWS EC2
 
 on:
   workflow_run:
-    workflows: ["Continuous Delivery"]
+    workflows: ["Continuous Delivery v2"]
     types:
       - completed
 
